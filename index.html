@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+        <style>
+            :root{
+                --grid:#D6DCEB; --text:#222; --muted:#777; --bad:#C00000;
+                --bg:#F4F6FA;
+                --primary: #1F3864; --bar:#16294A; --accent:#2E75B6;
+                --subhead:#D9E1F2; --soft:#EEF2F9; --active-row:#EEF4FF;
+                --ok:#1E7A3C; --warn:#B45309;
+            }
+            *{box-sizing: border-box}
+            html, body{
+                margin:0;
+                background: var(--bg);
+                color: var(--text);
+                font-family: 'cairo', Tahoma, 'Segoe UI', Arial, sans-serif;
+                font-size: 15px;
+            }
+            header{
+                background: var(--bar);
+                color: #fff;
+                padding: 10px 14px;
+                display: flex;
+                align-items: center;
+                justify-content: space-between
+            }
+            header h1{
+                margin: 0;
+                font-size: 1.05rem;
+                font-weight: 700;
+            }
+            .tabs{
+                display:flex;
+                background: #fff;
+                border-bottom: 1px solid var(--grid);
+            }
+            .tabs button{
+                flex: 1;
+                border: 0;
+                background: none;
+                padding: 10px;
+                font: inherit;
+                font-weight: 600;
+                color: var(--muted);
+                border-bottom: 3px solid transparent;
+            }
+        </style>
+    </head>
+    <body>
+        <header>
+            <h1>Nova Agro - حركة المفارش</h1>
+        </header>
+
+        <nav class="tabs">
+            <button class="on" data-tap="input">إدخال البيانات</button>
+            <button data-tab="report">التقرير</button>
+        </nav>
+
+        <!-- ===== إدخال البيانات ==== -->
+        <section class="pane on" id="input">
+            <div class="datebar">
+                <label for="entryDate">التاريخ</label>
+                <input type="date" id="entryDate">
+            </div>
+
+            <div class="sheet">
+                <table>
+                    <colgroup>
+                        <col style="width:36px"><col class="c-name">
+                        <col class="c-count">
+                        <col class="c-num"><col class="c-num">
+                        <col class="c-num"><col class="c-num">
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <th class="rn">#</th>
+                            <th>اسم المفرش</th>
+                            <th>العدد</th>
+                            <th>القائم</th>
+                            <th>الفارغ</th>
+                            <th>الفرزة</th>
+                            <th>الصافي</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody"></tbody>
+                    <tfoot>
+                        <tr>
+                            <th class="rn">Σ</th>
+                            <td>الاجمالي</td>
+                            <td id="tCount">-</td>
+                            <td id="tGross">0</td>
+                            <td id="tTare">0</td>
+                            <td id="tCull">0</td>
+                            <td id="tNet">0</td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+            <div class="hint">
+                العدد يكتب مثل: <b>3 ش</b> أو (شكاير) <b> ب 4</b> أو (برانيك) 
+                <b>2 ش 3 ب</b>
+                زر Enter ينتقل تلقائيا للخانة التالية وسطر جديد يضاف تلقائيا
+                أضغط علي رقم السطر للحذف
+            </div>
+            <div id="statusMsg"></div>
+        </section>
+
+         <!-- ==== التقرير ====-->
+        <section class="pane" id="report">
+            <div class="field">
+                <label for="startDate">من تاريخ</label>
+                <input type="date" id="startDate"></input>
+                <div class="hint">اتركه فارغاً ليبدأ التقرير من أول تسجيل</div>
+            </div>
+            <div class="field">
+                <label for="endDate">إالي تاريخ</label>
+                <input type="date" id="endDate">
+                <div class="hint">اتركه فارغا لينتهي التقرير بتاريخ اليوم.</div>
+            </div>
+            <div class="field">
+                <label for="waNumber">رقم واتساب (اختياري)</label>
+                <input type="tel" id="waNumber" placeholder="2010XXXXXXXX" inputmode="numeric">
+            </div>
+            <button class="btn btn-main btn-block" id="reportBtn" onclick="sendReport()">إنشاء التقرير ومشاركته</button>
+        </section>
+        <div class="bottombar" id="inputBar">
+            <button class="btn btn-light" onclick="addRow(true)">+ سطر</button>
+            <button class="btn btn-main" id="saveBtn" onclick="saveDate()">حفظ البيانات</button>
+        </div>
+        <datalist id="namesList"></datalist>
+        <script>
+
+        </script>
+    </body>
+</html>
