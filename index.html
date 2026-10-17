@@ -206,7 +206,7 @@
                 margin-top: 8px;
                 min-height: 1.4em
             }
-
+            
 
         </style>
     </head>
@@ -293,6 +293,59 @@
         </div>
         <datalist id="namesList"></datalist>
         <script>
+            const FIELDS = ['name', 'count', 'gross', 'tare', 'cull'];
+            const DRAFT_KEY = 'novaagro_draft_v2';
+            const tbody = document.getElementById("tableBody");
+            const dateInput = document.getElementById('entryDate');
+
+            /* ---------- أدوات مساعدة ------- */
+            function todayStr (){
+                const d = new Date();
+                return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + 
+                '-' + String(d.getDay()).padStart(2, '0');
+            }
+
+            function toLatinDigits(s){
+                return String(s || '')
+                .replace(/[٠-٩]/g, d => '٠١٢٣٤٥٦٧٨٩'.indexOf(d))
+                .replace(/[٠-٩]/g, d => '۰۱۲۳۴۵۶۷۸۹'.indexOf(d))
+                .replace(/[٫,]/g, '.');
+            }
+
+            function toNum(v){
+                const n = parseFloat(toLatinDigits(v));
+                return isNaN(n) ? 0 : n;
+            }
+
+            function fmt(n) {return Math.reound(n * 100) / 100;}
+
+            // توحيد صيغة العدد 3 ش او 4 ب
+            function normCount(v){
+                let s = toLatinDigits(v).trim();
+                s = s.replace(/[sS]/g, 'ش').replace(/[gG]/g, 'ب');
+                s = s.replace(/(\d+(?:\.\d+)?)\s*(ب|ش)[^\s\d+]*/g, '$1 $2 ');
+                return s.replace(/\s+/g, ' ').trim()
+            }
+            function paseCount(v){
+                const s = normCount(v);
+                let bags = 0, barn = 0, m;
+                const re = /(\d+(?:\.\d+)?)\s*(ش|ب)/g;
+                while((m = re.exec(s))) {if (m[2] === 'ش') bags += +m[1]; else
+                    bran += +m[1]; }
+                    return {bags, bran};
+            }
+
+            function countText(bags, bran){
+                const p = [];
+                if (bags) p.push(fmt(bags) + ' ش');
+                if (bran) p.push(fmt(bran) + ' ب');
+                return p.length ? p.join(' + ') : '--';
+            }
+
+            /* ----- الصفوف ------*/
+            function addRow(focus, data) {
+                data = data || {};
+            }
 
         </script>
     </body>
